@@ -3,17 +3,17 @@ const { fstat } = require('fs');
 let http = require('http');
 let fs = require('fs');
 
-http.createServer(function (req, res) {
+http.createServer(function(req, res) {
     if (req.url == '/fileupload') {
         let form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields, files) {
-            let oldpath = files.fileupload.path;
-            let newpath = '/Users/bettyria/Desktop/nodejs/img' + files.fileupload.name;
-            fs.rename(oldpath, newpath, function(err){
+        form.parse(req, function(err, fields, files) {
+            let oldpath = files.fileupload.filepath;
+            let newpath = '/Users/bettyria/Desktop/nodejs/img' + files.fileupload.originalFilename;
+            fs.rename(oldpath, newpath, function(err) {
                 if (err) throw err;
+                res.write('File uploaded and moved');
+                res.end();
             })
-            res.write('File uploaded and moved');
-            res.end();
         })
     } else {
         res.writeHead(200, { 'Content-Type': 'text/html' });
